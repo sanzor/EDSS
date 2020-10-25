@@ -1,4 +1,4 @@
 Erlang Distributed Socket Server
 =====
 
-![Components](/docs/pic.png)
+![Components](https://github.com/sanzor/EDSS/blob/master/docs/pic.PNG)
