@@ -1,4 +1,4 @@
-wsapp
+Erlang Distributed Socket Server
 =====
 
 An OTP application
