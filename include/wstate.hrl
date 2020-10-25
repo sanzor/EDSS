@@ -1,0 +1,5 @@
+
+-record(wstate,{
+    socket,
+    messages=[]
+    }).
