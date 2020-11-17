@@ -1,15 +1,26 @@
 -module(worker).
 -behaviour(gen_server).
 %-include("wstate.hrl").
--export([start/1,init/1,handle_cast/2,handle_call/3,gl/1,ga/1,con/3,sn/2]).
+-export([start/1,init/1,
+        handle_cast/2,handle_call/3,handle_info/2,
+        gl/1,ga/1,con/3,sn/2,st/1,cl/1]).
 -record(wstate,{
     socket,
     messages=[]
     }).
 
-%%%%%%api
+%%%Api
 start(ListenSock)->
     gen_server:start_link(?MODULE,ListenSock,[]).
+
+st(ListenSock)->
+    L=worker:gl(ListenSock),
+    {ok,P}=worker:start(L),
+    {L,P}.
+%%% Utilities
+
+cl(Socket)->gen_tcp:close(Socket).
+
 gl(Port)->
     {ok,Listen}=gen_tcp:listen(Port,[]),
     Listen.
@@ -30,14 +41,14 @@ init(LSock)->
     gen_server:cast(self(),'accept'),
     {ok,#wstate{socket=LSock}}.
 
-handle_call(From,Message,State)->
-    {noreply,State}.
+handle_call(Message,From,State)->
+    {reply,State,State}.
 
 handle_cast('accept',Wstate=#wstate{socket=S})->
     {ok,Socket}=gen_tcp:accept(S),
-    {noreply,Wstate#wstate{socket=Socket}};
+    {noreply,Wstate#wstate{socket=Socket}}.
 
-handle_cast({tcp,_,Message},State=#wstate{messages=Ms})->
+handle_info({tcp,_,Message},State=#wstate{messages=Ms})->
     {noreply,State#wstate{messages=[Message|Ms]}}.
 
 
