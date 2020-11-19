@@ -6,7 +6,8 @@
         gl/1,ga/1,con/3,sn/2,st/1,cl/1]).
 -record(wstate,{
     socket,
-    messages=[]
+    messages=[],
+    incr=0
     }).
 
 %%%Api
@@ -48,8 +49,17 @@ handle_cast('accept',Wstate=#wstate{socket=S})->
     {ok,Socket}=gen_tcp:accept(S),
     {noreply,Wstate#wstate{socket=Socket}}.
 
-handle_info({tcp,_,Message},State=#wstate{messages=Ms})->
-    {noreply,State#wstate{messages=[Message|Ms]}}.
+handle_info({tcp,_,Message},State=#wstate{messages=Ms,socket=S,incr=I})->
+    Nm=[Message|Ms],
+    St=case Message of
+        state  -> sn(S,State),
+                  State#wstate{messages=Nm};
+        incr   -> State#wstate{messages=Nm,incr=I+1};
+        decr   -> State#wstate{messages=Nm,incr=I-1};
+        _      -> sn(S,erlang:term_to_binary("Unknwon message"++Message)),
+                  State#wstate{messages=Nm}
+    end,
+    {noreply,St}.
 
 
 
