@@ -1,9 +1,4 @@
-wsapp
+Erlang Distributed Socket Server
 =====
 
-An OTP application
-
-Build
------
-
-    $ rebar3 compile
+![Components](https://github.com/sanzor/EDSS/blob/master/docs/pic.PNG)
