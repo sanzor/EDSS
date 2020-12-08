@@ -1,3 +1,6 @@
+%%% @author Bercovici Adrian Simon    
+%%% worker module responsible for handling
+%%% socket connections
 -module(worker).
 -behaviour(gen_server).
 %-include("wstate.hrl").
@@ -10,7 +13,9 @@
     incr=0
     }).
 
-%%%Api
+
+
+%% Api
 start(ListenSock)->
     gen_server:start_link(?MODULE,ListenSock,[]).
 
@@ -18,7 +23,13 @@ st(ListenSock)->
     L=worker:gl(ListenSock),
     {ok,P}=worker:start(L),
     {L,P}.
-%%% Utilities
+
+
+init(LSock)->
+    gen_server:cast(self(),'accept'),
+    {ok,#wstate{socket=LSock}}.
+
+%% Utilities
 
 cl(Socket)->gen_tcp:close(Socket).
 
@@ -36,11 +47,8 @@ con(Adr,Socket,T)->
    {ok,S}= gen_tcp:connect(Adr,Socket,[binary,{active,T}]),
     S.
 
-%%%%%%%
+% Callbacks
 
-init(LSock)->
-    gen_server:cast(self(),'accept'),
-    {ok,#wstate{socket=LSock}}.
 
 handle_call(Message,From,State)->
     {reply,State,State}.

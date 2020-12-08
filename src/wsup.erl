@@ -15,6 +15,6 @@ init(Args)->
             SupFlags=#{strategy=>simple_one_for_one,intensity=>5,period=>1000},
             ChildSpec=#{id=>worker,start=>{worker,start,[L]},restart=>transient,shutdown=>brutal_kill,type=>worker,modules=>[worker]},
             {ok,{SupFlags,[ChildSpec]}};
-        Error->socket_error
+        Error->exit(socket_error)
     end.
 
