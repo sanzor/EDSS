@@ -7,6 +7,9 @@
 -define(PORT,8300).
 
 start()->
+    supervisor:start({local,?NAME},?NAME,[]).
+
+start_link()->
     supervisor:start_link({local,?NAME},?NAME,[]).
 
 init(Args)->

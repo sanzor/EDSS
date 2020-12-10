@@ -1,6 +1,6 @@
 -module(server).
 -behaviour(gen_server).
--export([handle_call/3,handle_cast/2,terminate/2]).
+-export([start/0,handle_call/3]).
 
 
 start()->
@@ -11,3 +11,6 @@ handle_cast(connect,From,State)->
     {noreply,State}.
 handle_call(From,Message,State)->
     {noreply,State}.
+
+terminate(Reason,State)->
+    {ok,State}.
