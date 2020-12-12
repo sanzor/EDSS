@@ -1,0 +1,12 @@
+{
+  application,wapp,
+  [
+      {description,"Distributed tcp erlang server"},
+      {id,33},
+      {vsn,"1.0"},
+      {env,[{port,3300}]},
+      {mod,{wapp,[]}},
+      {modules,[worker,wsup,sup]},
+      {applications,[kernel,stdlib]}
+  ]  
+}.
