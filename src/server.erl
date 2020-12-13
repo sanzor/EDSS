@@ -1,16 +1,19 @@
 -module(server).
 -behaviour(gen_server).
--export([start/0,handle_call/3]).
+-export([handle_call/3,handle_cast/2,init/1,start/0]).
 
+-record(state,{
+    count=0
+}).
+
+-define(NAME,?MODULE).
 
 start()->
-    {ok,[]}.
-
-handle_cast(connect,From,State)->
+    gen_server:start_link({local,?NAME},?NAME,[],[]).
+init(Args)->
+    {ok,#state{count=0}}.
+handle_cast(connect,State)->
     supervisor:start_child(wsup,[]),
     {noreply,State}.
 handle_call(From,Message,State)->
     {noreply,State}.
-
-terminate(Reason,State)->
-    {ok,State}.

@@ -26,14 +26,14 @@ init([]) ->
                 id=>wsup,
                 start=>{wsup,start,[]},
                 restart=>permanent,
-                shutdown=>brutal_shutdown,
+                shutdown=>brutal_kill,
                 type=>supervisor,
                 modules=>[]
             } ,
             #{id =>server,
                 start=>{server,start,[]},
                 restart=>permanent,
-                shutdown=>brutal_shutdown,
+                shutdown=>brutal_kill,
                 type=>worker,
                 modules=>[]
             } 
