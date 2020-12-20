@@ -3,14 +3,15 @@
 %% @end
 %%%-------------------------------------------------------------------
 
--module(wapp).
+-module(wsapp).
 
 -behaviour(application).
 
 -export([start/2, stop/1]).
 
 start(StartType, _StartArgs) ->
-   sup:start_link().
+   {ok,Pid}=sup:start_link(),
+   {ok,Pid}.
 
 
 stop(_State) ->

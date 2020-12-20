@@ -1,0 +1,11 @@
+{
+  application,wsapp,
+  [
+    {vsn,"1.0"},
+    {modules,[wsapp,server,sup,wsup,worker]},
+    {applications,[kernel,stdlib]},
+    {mod,{wsapp,[]}},
+    {registered,[]},
+    {env,{port,8300}}
+  ]
+}.

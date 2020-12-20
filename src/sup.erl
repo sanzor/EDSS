@@ -18,24 +18,24 @@ start_link() ->
 init([]) ->
     SupFlags = #{
         strategy=>one_for_all,
-        intensity=>5,
-        period=>5000
+        intensity=>0,
+        period=>2
         },
     ChildSpec=[
             #{
-                id=>wsup,
-                start=>{wsup,start,[]},
-                restart=>permanent,
-                shutdown=>brutal_kill,
-                type=>supervisor,
-                modules=>[]
+              id=>wsup,
+              start=>{wsup,start_link,[]},
+              restart=>permanent,
+              shutdown=>brutal_kill,
+              modules=>[wsup],
+              type=>supervisor
             } ,
             #{id =>server,
                 start=>{server,start,[]},
                 restart=>permanent,
                 shutdown=>brutal_kill,
                 type=>worker,
-                modules=>[]
+                modules=>[server]
             } 
         ],
         {ok,{SupFlags,ChildSpec}}.
